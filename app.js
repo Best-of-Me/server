@@ -56,7 +56,15 @@ require("./passport")(app);
 const index = require("./routes/index");
 app.use("/", index);
 
-const authRoutes = require("./routes/auth");
-app.use("/auth", authRoutes);
+app.use("/auth", require("./routes/auth"));
+
+app.use("/users",require("./routes/user"))
+app.use("/users",require("./routes/genericCRUD")("User"))
+
+app.use("/items",require("./routes/item"))
+app.use("/items",require("./routes/genericCRUD")("Item"))
+
+app.use("/tasks",require("./routes/task"))
+app.use("/tasks",require("./routes/genericCRUD")("Task"))
 
 module.exports = app;
