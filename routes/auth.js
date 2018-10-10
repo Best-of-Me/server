@@ -8,27 +8,47 @@ const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
 
 router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/auth/login",
-    failureFlash: true,
-    passReqToCallback: true
-  })
-);
+  "/login",(req,res,next)=>{
+  passport.authenticate("local", (err, theUser, failureDetails) => {
+    if (err) {
+      res
+        .status(500)
+        .json({ message: "Something went wrong authenticating user" });
+      return;
+    }
+
+    if (!theUser) {
+      // "failureDetails" contains the error messages
+      // from our logic in "LocalStrategy" { message: '...' }.
+      res.status(401).json(failureDetails);
+      return;
+    }
+
+    // save user in session
+    req.login(theUser, err => {
+      if (err) {
+        res.status(500).json({ message: "Session save went bad." });
+        return;
+      }
+
+      // We are now logged in (that's why we can also send req.user)
+      res.status(200).json(theUser);
+    });
+  })(req, res, next)
+});
 
 router.post("/signup", (req, res, next) => {
   console.log(req);
   const username = req.body.username;
   const password = req.body.password;
   if (!username || !password) {
-    res.json({ok:false, message: "Indicate username and password" } );
+    res.status(400).json({ message: "Indicate username and password" });
     return;
   }
 
   User.findOne({ username }, "username", (err, user) => {
     if (user !== null) {
-      res.json({ok:false, message: "The username already exists" } );
+      res.status(409).json({ message: "The username already exists" });
       return;
     }
     const salt = bcrypt.genSaltSync(bcryptSalt);
@@ -43,17 +63,17 @@ router.post("/signup", (req, res, next) => {
     newUser
       .save()
       .then(() => {
-        res.json({ ok: true, message: `User ${username} has been created` });
+        res.status(201).json({message: `User ${username} has been created` });
       })
       .catch(err => {
-        res.json({ ok: false, message: "Something went wrong" });
+        res.status(500).json({ message: "Something went wrong" });
       });
   });
 });
 
 router.post("/logout", (req, res) => {
   req.logout();
-  res.json({ ok:true,message: "Logout" });
+  res.json({ ok: true, message: "Logout" });
 });
 
 module.exports = router;
