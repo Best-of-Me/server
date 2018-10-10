@@ -1,7 +1,6 @@
-const express = require("express");
-const passport = require("passport");
-const router = express.Router();
 genericCRUD = model => {
+  const express = require("express");
+  const router = express.Router();
   const Model = require(`../models/${model}`);
 
   router.get("/", (req, res, next) => {
