@@ -67,4 +67,6 @@ app.use("/items",require("./routes/genericCRUD")("Item"))
 app.use("/tasks",require("./routes/task"))
 app.use("/tasks",require("./routes/genericCRUD")("Task"))
 
+app.use("/",require("./routes/speedHelp"))
+
 module.exports = app;
