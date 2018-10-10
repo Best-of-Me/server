@@ -12,18 +12,14 @@ passport.use(
     (username, password, done) => {
       User.findOne({ username })
         .then(foundUser => {
-          if (!foundUser) {
-            done(null, false, { message: "Incorrect username" });
+          if (!foundUser || !bcrypt.compareSync(password, foundUser.password)) {
+            done(null, false, { message: "Incorrect user or password" });
             return;
           }
-
-          if (!bcrypt.compareSync(password, foundUser.password)) {
-            done(null, false, { message: "Incorrect password" });
-            return;
-          }
-
+          foundUser.password = undefined;
           done(null, foundUser);
         })
+
         .catch(err => done(err));
     }
   )
