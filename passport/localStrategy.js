@@ -10,6 +10,9 @@ passport.use(
       passwordField: "password"
     },
     (username, password, done) => {
+      if(!username || !password){
+        done(null, false, { message: "Incorrect user or password" });
+      }
       User.findOne({ username })
         .then(foundUser => {
           if (!foundUser || !bcrypt.compareSync(password, foundUser.password)) {

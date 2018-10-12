@@ -75,4 +75,14 @@ router.post("/logout", (req, res) => {
   res.json({ message: "Logout" });
 });
 
+
+router.get('/currentuser', (req,res,next) => {
+  if(req.user){
+    res.status(200).json(req.user);
+  }else{
+    res.status(401).json({message:'Not logged in'})
+  }
+})
+
+
 module.exports = router;
