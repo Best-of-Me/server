@@ -47,7 +47,7 @@ const speedHelp = {
       image: ""
     }
   },
-  happening: {
+  happenings: {
     rechazo: {
       text: "Rejection",
       image: ""
@@ -69,7 +69,7 @@ const speedHelp = {
       image: ""
     }
   },
-  advise: {
+  advises: {
     advise1: { title: "Sugerencia 1", text: "texto de la sugerencia1" },
     advise2: { title: "Sugerencia 2", text: "texto de la sugerencia2" },
     advise3: { title: "Sugerencia 3", text: "texto de la sugerencia3" },
