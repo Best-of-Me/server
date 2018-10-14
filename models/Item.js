@@ -6,7 +6,7 @@ const itemSchema = new Schema(
     description: String,
     price: String,
     currency: String,
-    type: [{ type: String, enum: ["Accessory", "Pet", "Background"] }]
+    type: { type: String, enum: ["Accessories", "Pets", "Backgrounds"] }
   },
   {
     timestamps: {
