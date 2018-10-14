@@ -28,6 +28,10 @@ genericCRUD = model => {
   });
   router.post("/", (req, res, next) => {
     const object = {...req.body}
+    if(Object.keys(object).length === 0) {
+      res.status(400).json({message:'Empty data'})
+      return
+    }
     Model.create(object).then(result => {
       if (result) {
         res.status(200).json(result)
