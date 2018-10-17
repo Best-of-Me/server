@@ -6,8 +6,9 @@ passport.serializeUser((loggedInUser, cb) => {
 });
 
 passport.deserializeUser((userIdFromSession, cb) => {
-  User.findById(userIdFromSession)
+  User.findById(userIdFromSession).populate("tasks")
     .then(userDocument => {
+      console.log(userDocument)
       cb(null, userDocument);
     })
     .catch(err => {

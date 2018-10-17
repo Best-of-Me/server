@@ -18,6 +18,11 @@ const userSchema = new Schema(
       }
     ],
     tasks: [{ type: ObjectId, ref: "Task" }],
+    completedTasks: [
+      { task:{ type: ObjectId, ref: "Task"},
+        created_at:{ type: Date, default: Date.now }
+      }
+    ],
     background: { type: ObjectId, ref: "Item" },
     pet: { type: ObjectId, ref: "Item" },
     accessory: { type: ObjectId, ref: "Item" }
